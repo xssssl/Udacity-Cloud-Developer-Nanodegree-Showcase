@@ -62,47 +62,49 @@ custom:
         title: Resolutions-API
         description: Udacity Cloud Developer Nanodegree Showcase
     models:
-      - name: CreateTodoRequest
+      - name: CreateResolutionRequest
         contentType: application/json
-        schema: ${file(src/requests/CreateToDoRequest.json)}
-      - name: UpdateTodoRequest
+        schema: ${file(src/requests/CreateResolutionRequest.json)}
+      - name: UpdateResolutionRequest
         contentType: application/json
-        schema: ${file(src/requests/UpdateTodoRequest.json)}
+        schema: ${file(src/requests/UpdateResolutionRequest.json)}
 
 functions:
   Auth:
     handler: src/lambda/auth/auth0Authorizer.handler
 
-  GetTodos:
-    handler: src/lambda/http/getTodos.handler
+  GetResolutions:
+    handler: src/lambda/http/getResolutions.handler
     events:
       - http:
           method: get
-          path: todos
+          path: items
           cors: true
           authorizer: Auth
     iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:provider.environment.APP_NAME}-GetResolutions-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RESOLUTIONS_TABLE}
 
-  CreateTodo:
-    handler: src/lambda/http/createTodo.handler
+  CreateResolution:
+    handler: src/lambda/http/createResolution.handler
     events:
       - http:
           method: post
-          path: todos
+          path: items
           cors: true
           authorizer: Auth
           documentation:
-            summary: 'Create a new todo item'
-            description: 'Create a new todo item'
+            summary: 'Create a new resolution idea'
+            description: 'Create a new resolution idea'
             requestModels:
-              'application/json': CreateTodoRequest
+              'application/json': CreateResolutionRequest
           reqValidatorName: RequestBodyValidator
     iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:provider.environment.APP_NAME}-CreateResolution-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -114,7 +116,7 @@ functions:
     events:
       - http:
           method: patch
-          path: todos/{todoId}
+          path: items/{itemId}
           cors: true
           authorizer: Auth
           documentation:
@@ -135,7 +137,7 @@ functions:
     events:
       - http:
           method: delete
-          path: todos/{todoId}
+          path: items/{itemId}
           cors: true
           authorizer: Auth
     iamRoleStatementsInherit: true
@@ -150,7 +152,7 @@ functions:
     events:
       - http:
           method: post
-          path: todos/{todoId}/attachment
+          path: items/{itemId}/attachment
           cors: true
           authorizer: Auth
     iamRoleStatementsInherit: true

@@ -1,34 +1,34 @@
 import 'source-map-support/register'
 
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
+import { getAllResolutionItems } from '../../businessLogic/resolutions'
 import * as middy from 'middy'
 import { cors } from 'middy/middlewares'
-import { CreateTodoRequest } from '../../requests/CreateTodoRequest'
-import { createTodoItem } from '../../businessLogic/todos'
-import { getJwtToken } from '../utils'
+import { getJwtToken, getUserId } from '../utils'
+import { createLogger } from '../../utils/logger'
 
+const logger = createLogger('getResolutions')
 
 export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  const newTodo: CreateTodoRequest = JSON.parse(event.body)
-
-  // TODO: Implement creating a new TODO item
   try {
+    // console.log(event)
     const jwtToken = getJwtToken(event)
-    // console.log(`Get JWT Token: ${jwtToken}`)
+    const userId = getUserId(event)
+    logger.info(`Get all resolution: User ID: ${userId}`)
 
-    const item = await createTodoItem(newTodo, jwtToken)
+    const items = await getAllResolutionItems(jwtToken)
+
     return {
       statusCode: 200,
       body: JSON.stringify({
-        item
+        items
       })
     }
-  } catch(e) {
+  } catch (error) {
     return {
-      statusCode: 500,
+      statusCode: 401,
       body: JSON.stringify({
-        item: newTodo,
-        message: 'Create todo item failed'
+        error: error.message
       })
     }
   }
@@ -38,4 +38,4 @@ handler.use(
   cors({
     credentials: true
   })
-)
+  )
