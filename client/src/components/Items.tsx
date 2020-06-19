@@ -148,7 +148,7 @@ export class Items extends React.PureComponent<ItemsProps, ItemsState> {
     return (
       <div>
 
-        <Divider horizontal><h2>Write new diary</h2></Divider>
+        <Divider horizontal><h2>Add a new resolution idea</h2></Divider>
 
         <Form onSubmit={this.handleSubmit}>
           <Form.Field>
@@ -197,7 +197,7 @@ export class Items extends React.PureComponent<ItemsProps, ItemsState> {
     return (
       
       <Grid.Row>
-        <Divider horizontal><h3>Your Diaries</h3></Divider>
+        <Divider horizontal><h3>Your Resolutions</h3></Divider>
 
         <Loader indeterminate active inline="centered">
           Loading Items
@@ -209,7 +209,7 @@ export class Items extends React.PureComponent<ItemsProps, ItemsState> {
   renderItemsList() {
     return (
       <Container>
-        <Divider horizontal><h3>Your Diaries</h3></Divider>
+        <Divider horizontal><h3>Your Resolutions</h3></Divider>
 
         <Grid>
           {this.state.items.map((item, pos) => {

@@ -104,7 +104,7 @@ EditItemState
   render() {
     return (
       <div>
-        <h1>Update Diary</h1>
+        <h1>Update Resolution</h1>
 
         <Form onSubmit={this.handleSubmit}>
         <Form.Field>

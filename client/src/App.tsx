@@ -39,7 +39,7 @@ export default class App extends Component<AppProps, AppState> {
         <Segment style={{ padding: '8em 0em' }} vertical>
           <Grid container stackable verticalAlign="middle">
             <Grid.Row>
-              <Header as="h1">Journal App</Header>
+              <Header as="h1">Resolution Ideas</Header>
             </Grid.Row>
             <Grid.Row>
               <Grid.Column width={16}>
