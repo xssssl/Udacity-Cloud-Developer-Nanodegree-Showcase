@@ -1,7 +1,7 @@
 import * as AWS  from 'aws-sdk'
 import * as AWSXRay from 'aws-xray-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
-import { TodoItem } from '../models/TodoItem'
+import { TodoItem } from '../models/ResolutionItem'
 import { TodoUpdate } from '../models/TodoUpdate'
 import { Types } from 'aws-sdk/clients/s3'
 
@@ -13,8 +13,8 @@ export class TodoAccess {
   constructor(
     private readonly docClient: DocumentClient = createDynamoDBClient(),
     private readonly s3Client: Types = new AWSSDK.S3({ signatureVersion: 'v4' }),
-    private readonly s3BucketName = process.env.TODOS_S3_BUCKET,
-    private readonly todosTable = process.env.TODOS_TABLE) {
+    private readonly s3BucketName = process.env.RESOLUTIONS_S3_BUCKET,
+    private readonly todosTable = process.env.RESOLUTIONS_TABLE) {
   }
 
   async getAllItems(userId: string): Promise<TodoItem[]> {

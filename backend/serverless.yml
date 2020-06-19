@@ -1,5 +1,5 @@
 service:
-  name: serverless-todo-app
+  name: udacity-cloud-developer-nanodegree-showcase
 
 plugins:
   - serverless-webpack
@@ -31,9 +31,9 @@ provider:
       Resource: "*"
 
   environment:
-    APP_NAME: p4-serverless-todo-app-xssssl
-    TODOS_TABLE: Todos-${self:provider.stage}
-    TODOS_S3_BUCKET: ${self:provider.environment.APP_NAME}-${self:provider.stage}
+    APP_NAME: Cloud-Developer-Nanodegree-Showcase
+    RESOLUTIONS_TABLE: Resolutions-${self:provider.stage}
+    RESOLUTIONS_S3_BUCKET: ${self:provider.environment.APP_NAME}-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
     LOCAL_DYNAMODB_PORT: 8000
     AUTH0_JWKS_URL: https://xssssl.au.auth0.com/.well-known/jwks.json
@@ -50,17 +50,17 @@ custom:
       migrate: true
       seed: true
     seed:
-      todos:
+      resolutions:
         sources:
-          - table: ${self:provider.environment.TODOS_TABLE}
-            sources: [./test/seed/todosTable.json]
+          - table: ${self:provider.environment.RESOLUTIONS_TABLE}
+            sources: [./test/seed/ResolutionsTable.json]
 
   documentation:
     api:
       info:
         version: v1.0.0
-        title: Todos-API
-        description: Serverless APP for Udacity Cloud Developer Project 4
+        title: Resolutions-API
+        description: Udacity Cloud Developer Nanodegree Showcase
     models:
       - name: CreateTodoRequest
         contentType: application/json
@@ -86,7 +86,7 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:Query
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RESOLUTIONS_TABLE}
 
   CreateTodo:
     handler: src/lambda/http/createTodo.handler
@@ -107,7 +107,7 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:PutItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RESOLUTIONS_TABLE}
 
   UpdateTodo:
     handler: src/lambda/http/updateTodo.handler
@@ -128,7 +128,7 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:UpdateItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RESOLUTIONS_TABLE}
 
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler
@@ -143,7 +143,7 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:DeleteItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RESOLUTIONS_TABLE}
 
   GenerateUploadUrl:
     handler: src/lambda/http/generateUploadUrl.handler
@@ -159,12 +159,12 @@ functions:
       - Effect: Allow
         Action:
           - s3:*
-        Resource: arn:aws:s3:::${self:provider.environment.TODOS_S3_BUCKET}/*
+        Resource: arn:aws:s3:::${self:provider.environment.RESOLUTIONS_S3_BUCKET}/*
       - Effect: Allow
         Action:
           - dynamodb:GetItem
           - dynamodb:UpdateItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RESOLUTIONS_TABLE}
 
 resources:
   Resources:
@@ -174,15 +174,15 @@ resources:
         AttributeDefinitions:
           - AttributeName: userId
             AttributeType: S
-          - AttributeName: todoId
+          - AttributeName: resId
             AttributeType: S
         KeySchema:
           - AttributeName: userId
             KeyType: HASH
-          - AttributeName: todoId
+          - AttributeName: resId
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
-        TableName: ${self:provider.environment.TODOS_TABLE}
+        TableName: ${self:provider.environment.RESOLUTIONS_TABLE}
 
     RequestBodyValidator:
       Type: 'AWS::ApiGateway::RequestValidator'
@@ -196,7 +196,7 @@ resources:
     AttachmentsBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:provider.environment.TODOS_S3_BUCKET}
+        BucketName: ${self:provider.environment.RESOLUTIONS_S3_BUCKET}
         CorsConfiguration:
           CorsRules:
             - AllowedOrigins:
@@ -222,5 +222,5 @@ resources:
               Effect: Allow
               Principal: '*'
               Action: 's3:GetObject'
-              Resource: 'arn:aws:s3:::${self:provider.environment.TODOS_S3_BUCKET}/*'
+              Resource: 'arn:aws:s3:::${self:provider.environment.RESOLUTIONS_S3_BUCKET}/*'
         Bucket: !Ref AttachmentsBucket
