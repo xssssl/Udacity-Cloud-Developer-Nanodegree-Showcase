@@ -3,31 +3,34 @@ import 'source-map-support/register'
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 
 import { generateUploadUrl } from '../../businessLogic/resolutions'
-import { createLogger } from '../../utils/logger'
 import * as middy from 'middy'
 import { cors } from 'middy/middlewares'
 import { getUserId } from '../utils'
+import { createLogger } from '../../utils/logger'
 
 const logger = createLogger('generateUploadUrl')
 
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    // TODO: Return a presigned URL to upload a file for a TODO item with the provided id
-    logger.info('Processing Event ', event)
-    const todoId = event.pathParameters.todoId
-    const userId = getUserId(event)
-
-    const URL = await generateUploadUrl(todoId, userId)
-
-    return {
-      statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true
-      },
-      body: JSON.stringify({
-        uploadUrl: URL
-      })
+    try {
+      const resId = event.pathParameters.itemId
+      const userId = getUserId(event)
+      logger.info(`Generate the signed-URL: ${resId}`)
+  
+      const URL = await generateUploadUrl(resId, userId)
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          uploadUrl: URL
+        })
+      }
+    } catch(error) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          error: error.message
+        })
+      }
     }
   }
 )

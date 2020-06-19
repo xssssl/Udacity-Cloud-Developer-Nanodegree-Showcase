@@ -4,7 +4,7 @@ import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 import { createLogger } from '../utils/logger'
 import { ResolutionItem } from '../models/ResolutionItem'
 import { ResolutionUpdate } from '../models/ResolutionUpdate'
-// import { Types } from 'aws-sdk/clients/s3'
+import { Types } from 'aws-sdk/clients/s3'
 
 // const XAWS = AWSXRay.captureAWS(AWS)
 const AWSSDK = chooseAwsSdk()
@@ -14,8 +14,9 @@ export class ResolutionAccess {
 
   constructor(
     private readonly docClient: DocumentClient = createDynamoDBClient(),
-    // private readonly s3Client: Types = new AWSSDK.S3({ signatureVersion: 'v4' }),
-    // private readonly s3BucketName = process.env.RESOLUTIONS_S3_BUCKET,
+    private readonly s3Client: Types = new AWSSDK.S3({ signatureVersion: 'v4' }),
+    private readonly s3BucketName = process.env.RESOLUTIONS_S3_BUCKET,
+    private readonly signedUrlExpiration = process.env.SIGNED_URL_EXPIRATION,
     private readonly resolutionsTable = process.env.RESOLUTIONS_TABLE) {
   }
 
@@ -90,30 +91,29 @@ export class ResolutionAccess {
     return resId as string
   }
 
-  // async generateUploadUrl(todoId: string, userId: string): Promise<string> {
-  //   console.log(`Generating Upload URL: Todo ID: ${todoId}`)
-  //   const uploadUrl = `https://${this.s3BucketName}.s3.amazonaws.com/${todoId}`
+  async generateUploadUrl(resId: string, userId: string): Promise<string> {
+    logger.info(`Generating Upload URL: ${resId}`)
+    const uploadUrl = `https://${this.s3BucketName}.s3.amazonaws.com/${resId}`
   
-  //   await this.docClient.update({
-  //     TableName: this.todosTable,
-  //       Key: {
-  //         "userId": userId,
-  //         "todoId": todoId
-  //       },
-  //       UpdateExpression: "set attachmentUrl= :attachmentUrl",
-  //       ExpressionAttributeValues:{
-  //         ":attachmentUrl": uploadUrl
-  //       }
-  //   }).promise()
+    await this.docClient.update({
+      TableName: this.resolutionsTable,
+        Key: {
+          "userId": userId,
+          "resId": resId
+        },
+        UpdateExpression: "set attachmentUrl= :attachmentUrl",
+        ExpressionAttributeValues:{
+          ":attachmentUrl": uploadUrl
+        }
+    }).promise()
 
-  //   const url = this.s3Client.getSignedUrl('putObject', {
-  //     Bucket: this.s3BucketName,
-  //     Key: todoId,
-  //     Expires: 3000
-  //   })
-
-  //   return url as string
-  // }
+    const url = this.s3Client.getSignedUrl('putObject', {
+      Bucket: this.s3BucketName,
+      Key: resId,
+      Expires: this.signedUrlExpiration
+    })
+    return url as string
+  }
 }
 
 function chooseAwsSdk() {
@@ -129,7 +129,6 @@ function chooseAwsSdk() {
 function createDynamoDBClient() {
   if (process.env.IS_OFFLINE) {
     const localDynamodbPort = process.env.LOCAL_DYNAMODB_PORT
-    console.log(`IS_OFFLINE=${process.env.IS_OFFLINE}`)
     console.log(`Creating a local DynamoDB instance: Port:${localDynamodbPort}`)
     return new AWSSDK.DynamoDB.DocumentClient({
       region: 'localhost',

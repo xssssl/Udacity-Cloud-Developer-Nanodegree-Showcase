@@ -53,6 +53,6 @@ export async function deleteResolution(resId: string, jwtToken: string): Promise
   return await resolutionAccess.deleteItem(resId, userId)
 }
 
-// export function generateUploadUrl(todoId: string, userId:string): Promise<string> {
-//   return todoAccess.generateUploadUrl(todoId, userId)
-// }
+export function generateUploadUrl(resId: string, userId:string): Promise<string> {
+  return resolutionAccess.generateUploadUrl(resId, userId)
+}
