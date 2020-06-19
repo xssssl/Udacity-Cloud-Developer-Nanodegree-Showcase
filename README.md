@@ -9,7 +9,7 @@ Serverless resolution reminder where a user can pen down their thoughts, feeling
 - The application allows users to upload a file. 
 - The application only displays resolutions for a logged in user.
 - A user needs to authenticate in order to use an application
-[homepage.png](https://github.com/xssssl/Udacity-Cloud-Developer-Nanodegree-Showcase/blob/dev/screenshots/homepage.png "homepage.png")
+![homepage.png](https://github.com/xssssl/Udacity-Cloud-Developer-Nanodegree-Showcase/blob/dev/screenshots/homepage.png)
 
 
 ## Codebase
