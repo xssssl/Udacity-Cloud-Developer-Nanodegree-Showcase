@@ -115,7 +115,7 @@ functions:
     handler: src/lambda/http/updateResolution.handler
     events:
       - http:
-          method: patch
+          method: put
           path: items/{itemId}
           cors: true
           authorizer: Auth
