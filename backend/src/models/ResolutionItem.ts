@@ -1,6 +1,6 @@
 export interface ResolutionItem {
   userId: string
-  resId: string
+  itemId: string
   title: string
   desc: string
   createdAt: string

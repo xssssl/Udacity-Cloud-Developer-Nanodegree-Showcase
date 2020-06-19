@@ -35,7 +35,7 @@ export class ResolutionAccess {
   }
 
   async createItem(resolutionItem: ResolutionItem): Promise<ResolutionItem> {
-    logger.info(`Creating an item: ${resolutionItem.resId}`)
+    logger.info(`Creating an item: ${resolutionItem.itemId}`)
     await this.docClient.put({
       TableName: this.resolutionsTable,
       Item: resolutionItem
@@ -45,16 +45,16 @@ export class ResolutionAccess {
 
   async updateItem(
     resolutionUpdate: ResolutionUpdate,
-    resId: string,
+    itemId: string,
     userId: string
   ): Promise<ResolutionUpdate> {
-    logger.info(`Updating an item: ${resId}`)
+    logger.info(`Updating an item: ${itemId}`)
 
     const params = {
       TableName: this.resolutionsTable,
       Key: {
         userId: userId,
-        resId: resId
+        itemId: itemId
       },
       UpdateExpression: 'set #a = :a, #b = :b, #c = :c',
       ExpressionAttributeNames: {
@@ -75,31 +75,31 @@ export class ResolutionAccess {
     return attributes as ResolutionUpdate
   }
 
-  async deleteItem(resId: string, userId: string): Promise<string> {
-    logger.info(`Deleting an item: ${resId}`)
+  async deleteItem(itemId: string, userId: string): Promise<string> {
+    logger.info(`Deleting an item: ${itemId}`)
 
     const params = {
       TableName: this.resolutionsTable,
       Key: {
         userId: userId,
-        resId: resId
+        itemId: itemId
       }
     }
 
     const result = await this.docClient.delete(params).promise()
     console.log(result)
-    return resId as string
+    return itemId as string
   }
 
-  async generateUploadUrl(resId: string, userId: string): Promise<string> {
-    logger.info(`Generating Upload URL: ${resId}`)
-    const uploadUrl = `https://${this.s3BucketName}.s3.amazonaws.com/${resId}`
+  async generateUploadUrl(itemId: string, userId: string): Promise<string> {
+    logger.info(`Generating Upload URL: ${itemId}`)
+    const uploadUrl = `https://${this.s3BucketName}.s3.amazonaws.com/${itemId}`
   
     await this.docClient.update({
       TableName: this.resolutionsTable,
         Key: {
           "userId": userId,
-          "resId": resId
+          "itemId": itemId
         },
         UpdateExpression: "set attachmentUrl= :attachmentUrl",
         ExpressionAttributeValues:{
@@ -109,7 +109,7 @@ export class ResolutionAccess {
 
     const url = this.s3Client.getSignedUrl('putObject', {
       Bucket: this.s3BucketName,
-      Key: resId,
+      Key: itemId,
       Expires: this.signedUrlExpiration
     })
     return url as string

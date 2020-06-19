@@ -15,11 +15,11 @@ export const handler = middy(
 
     try {
       const jwtToken = getJwtToken(event)
-      const resId = event.pathParameters.itemId
+      const itemId = event.pathParameters.itemId
       const updateResolutionRequest: UpdateResolutionRequest = JSON.parse(event.body)
-      logger.info(`Update a resolution: ${resId}`)
+      logger.info(`Update a resolution: ${itemId}`)
 
-      const resolutionItem = await updateResolution(updateResolutionRequest, resId, jwtToken)
+      const resolutionItem = await updateResolution(updateResolutionRequest, itemId, jwtToken)
 
       return {
         statusCode: 200,

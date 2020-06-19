@@ -14,10 +14,10 @@ export const handler = middy(
     
     try {
       const jwtToken = getJwtToken(event)
-      const resId = event.pathParameters.itemId
-      logger.info(`Delete a resolution: ${resId}`)
+      const itemId = event.pathParameters.itemId
+      logger.info(`Delete a resolution: ${itemId}`)
 
-      const deleteData = await deleteResolution(resId, jwtToken)
+      const deleteData = await deleteResolution(itemId, jwtToken)
       return {
         statusCode: 200,
         body: deleteData

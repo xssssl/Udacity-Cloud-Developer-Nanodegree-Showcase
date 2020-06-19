@@ -13,11 +13,11 @@ const logger = createLogger('generateUploadUrl')
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
-      const resId = event.pathParameters.itemId
+      const itemId = event.pathParameters.itemId
       const userId = getUserId(event)
-      logger.info(`Generate the signed-URL: ${resId}`)
+      logger.info(`Generate the signed-URL: ${itemId}`)
   
-      const URL = await generateUploadUrl(resId, userId)
+      const URL = await generateUploadUrl(itemId, userId)
       return {
         statusCode: 200,
         body: JSON.stringify({

@@ -19,13 +19,13 @@ export async function createResolutionItem(
   jwtToken: string
 ): Promise<ResolutionItem> {
 
-  const resId = uuid.v4()
+  const itemId = uuid.v4()
   const userId = parseUserId(jwtToken)
   const date = new Date().toISOString()
 
   return await resolutionAccess.createItem({
     userId: userId,
-    resId: resId,
+    itemId: itemId,
     title: createResolutionRequest.title,
     desc: createResolutionRequest.desc,    
     createdAt: date,
@@ -35,7 +35,7 @@ export async function createResolutionItem(
 
 export async function updateResolution(
   updateResolutionRequest: UpdateResolutionRequest,
-  resId: string,
+  itemId: string,
   jwtToken: string
 ): Promise<ResolutionUpdate> {
   const userId = parseUserId(jwtToken)
@@ -45,14 +45,14 @@ export async function updateResolution(
                                               'desc': updateResolutionRequest.desc,
                                               'modifiedAt': date
                                             }
-  return await resolutionAccess.updateItem(resolutionUpdate, resId, userId)
+  return await resolutionAccess.updateItem(resolutionUpdate, itemId, userId)
 }
 
-export async function deleteResolution(resId: string, jwtToken: string): Promise<string> {
+export async function deleteResolution(itemId: string, jwtToken: string): Promise<string> {
   const userId = parseUserId(jwtToken)
-  return await resolutionAccess.deleteItem(resId, userId)
+  return await resolutionAccess.deleteItem(itemId, userId)
 }
 
-export function generateUploadUrl(resId: string, userId:string): Promise<string> {
-  return resolutionAccess.generateUploadUrl(resId, userId)
+export function generateUploadUrl(itemId: string, userId:string): Promise<string> {
+  return resolutionAccess.generateUploadUrl(itemId, userId)
 }
