@@ -1,0 +1,56 @@
+[
+    {
+        "userId": "fakeUser1",
+        "todoId": "123",
+        "createdAt": "2019-07-27T20:01:45.424Z",
+        "name": "Buy milk",
+        "dueDate": "2019-07-29T20:01:45.424Z",
+        "done": false,
+        "attachmentUrl": "http://example.com/image.png"
+    },
+    {
+        "userId": "fakeUser2",
+        "todoId": "456",
+        "createdAt": "2019-07-27T20:01:45.424Z",
+        "name": "Send a letter",
+        "dueDate": "2019-07-29T20:01:45.424Z",
+        "done": true,
+        "attachmentUrl": "http://example.com/image.png"
+    },
+    {
+        "userId": "fakeUser1",
+        "todoId": "234",
+        "createdAt": "2019-07-27T21:01:46.424Z",
+        "name": "sweep the floor",
+        "dueDate": "2019-07-29T21:01:46.424Z",
+        "done": true,
+        "attachmentUrl": "http://example.com/image2.png"
+    },
+    {
+        "userId": "fakeUser3",
+        "todoId": "789",
+        "createdAt": "2019-07-27T20:01:46.424Z",
+        "name": "do the laundry",
+        "dueDate": "2019-07-29T20:01:46.424Z",
+        "done": false,
+        "attachmentUrl": "http://example.com/image.png"
+    },
+    {
+        "userId": "google-oauth2|117119702132692247323",
+        "todoId": "135",
+        "createdAt": "2020-06-10T20:01:46.424Z",
+        "name": "clean the table",
+        "dueDate": "2020-06-30T20:01:46.424Z",
+        "done": false,
+        "attachmentUrl": "http://example.com/image.png"
+    },
+    {
+        "userId": "google-oauth2|117119702132692247323",
+        "todoId": "357",
+        "createdAt": "2020-06-10T20:02:46.424Z",
+        "name": "mop the floor",
+        "dueDate": "2020-06-30T20:02:46.424Z",
+        "done": false,
+        "attachmentUrl": "http://example.com/image.png"
+    }
+]
