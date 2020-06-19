@@ -1,26 +1,29 @@
 import * as AWS  from 'aws-sdk'
 import * as AWSXRay from 'aws-xray-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
-import { TodoItem } from '../models/TodoItem'
-import { TodoUpdate } from '../models/TodoUpdate'
+import { createLogger } from '../utils/logger'
+import { ResolutionItem } from '../models/ResolutionItem'
+import { ResolutionUpdate } from '../models/ResolutionUpdate'
 import { Types } from 'aws-sdk/clients/s3'
 
 // const XAWS = AWSXRay.captureAWS(AWS)
 const AWSSDK = chooseAwsSdk()
+const logger = createLogger('resAccess')
 
-export class TodoAccess {
+export class ResolutionAccess {
 
   constructor(
     private readonly docClient: DocumentClient = createDynamoDBClient(),
     private readonly s3Client: Types = new AWSSDK.S3({ signatureVersion: 'v4' }),
-    private readonly s3BucketName = process.env.TODOS_S3_BUCKET,
-    private readonly todosTable = process.env.TODOS_TABLE) {
+    private readonly s3BucketName = process.env.RESOLUTIONS_S3_BUCKET,
+    private readonly signedUrlExpiration = process.env.SIGNED_URL_EXPIRATION,
+    private readonly resolutionsTable = process.env.RESOLUTIONS_TABLE) {
   }
 
-  async getAllItems(userId: string): Promise<TodoItem[]> {
-    console.log(`Getting all items: ${userId}`)
+  async getAllItems(userId: string): Promise<ResolutionItem[]> {
+    logger.info(`Getting all items: User ID: ${userId}`)
     const result = await this.docClient.query({
-      TableName: this.todosTable,
+      TableName: this.resolutionsTable,
       KeyConditionExpression: 'userId = :userId',
       ExpressionAttributeValues: {
         ':userId': userId
@@ -28,77 +31,75 @@ export class TodoAccess {
       ScanIndexForward: false
     }).promise()
     const items = result.Items
-    return items as TodoItem[]
+    return items as ResolutionItem[]
   }
 
-  async createItem(todoItem: TodoItem): Promise<TodoItem> {
+  async createItem(resolutionItem: ResolutionItem): Promise<ResolutionItem> {
+    logger.info(`Creating an item: ${resolutionItem.itemId}`)
     await this.docClient.put({
-      TableName: this.todosTable,
-      Item: todoItem
+      TableName: this.resolutionsTable,
+      Item: resolutionItem
     }).promise()
-    return todoItem
+    return resolutionItem
   }
 
-  async updateToDo(
-    todoUpdate: TodoUpdate,
-    todoId: string,
+  async updateItem(
+    resolutionUpdate: ResolutionUpdate,
+    itemId: string,
     userId: string
-  ): Promise<TodoUpdate> {
-    console.log(`Updating todo: User ID: ${userId}`)
+  ): Promise<ResolutionUpdate> {
+    logger.info(`Updating an item: ${itemId}`)
 
     const params = {
-      TableName: this.todosTable,
+      TableName: this.resolutionsTable,
       Key: {
         userId: userId,
-        todoId: todoId
+        itemId: itemId
       },
       UpdateExpression: 'set #a = :a, #b = :b, #c = :c',
       ExpressionAttributeNames: {
-        '#a': 'name',
-        '#b': 'dueDate',
-        '#c': 'done'
+        '#a': 'title',
+        '#b': 'desc',
+        '#c': 'modifiedAt'
       },
       ExpressionAttributeValues: {
-        ':a': todoUpdate['name'],
-        ':b': todoUpdate['dueDate'],
-        ':c': todoUpdate['done']
+        ':a': resolutionUpdate['title'],
+        ':b': resolutionUpdate['desc'],
+        ':c': resolutionUpdate['modifiedAt']
       },
       ReturnValues: 'ALL_NEW'
     }
 
     const result = await this.docClient.update(params).promise()
-    console.log(result)
     const attributes = result.Attributes
-
-    return attributes as TodoUpdate
+    return attributes as ResolutionUpdate
   }
 
-  async deleteToDo(todoId: string, userId: string): Promise<string> {
-    console.log(`Deleting todo: User ID: ${userId}`)
+  async deleteItem(itemId: string, userId: string): Promise<string> {
+    logger.info(`Deleting an item: ${itemId}`)
 
     const params = {
-      TableName: this.todosTable,
+      TableName: this.resolutionsTable,
       Key: {
         userId: userId,
-        todoId: todoId
+        itemId: itemId
       }
     }
 
     const result = await this.docClient.delete(params).promise()
     console.log(result)
-
-    return '' as string
+    return itemId as string
   }
 
-  async generateUploadUrl(todoId: string, userId: string): Promise<string> {
-    console.log(`Generating Upload URL: Todo ID: ${todoId}`)
-    const uploadUrl = `https://${this.s3BucketName}.s3.amazonaws.com/${todoId}`
+  async generateUploadUrl(itemId: string, userId: string): Promise<string> {
+    logger.info(`Generating Upload URL: ${itemId}`)
+    const uploadUrl = `https://${this.s3BucketName}.s3.amazonaws.com/${itemId}`
   
     await this.docClient.update({
-      TableName: this.todosTable,
+      TableName: this.resolutionsTable,
         Key: {
           "userId": userId,
-          "todoId": todoId
+          "itemId": itemId
         },
         UpdateExpression: "set attachmentUrl= :attachmentUrl",
         ExpressionAttributeValues:{
@@ -108,10 +109,9 @@ export class TodoAccess {
 
     const url = this.s3Client.getSignedUrl('putObject', {
       Bucket: this.s3BucketName,
-      Key: todoId,
-      Expires: 3000
+      Key: itemId,
+      Expires: this.signedUrlExpiration
     })
-
     return url as string
   }
 }
@@ -129,7 +129,6 @@ function chooseAwsSdk() {
 function createDynamoDBClient() {
   if (process.env.IS_OFFLINE) {
     const localDynamodbPort = process.env.LOCAL_DYNAMODB_PORT
-    console.log(`IS_OFFLINE=${process.env.IS_OFFLINE}`)
     console.log(`Creating a local DynamoDB instance: Port:${localDynamodbPort}`)
     return new AWSSDK.DynamoDB.DocumentClient({
       region: 'localhost',

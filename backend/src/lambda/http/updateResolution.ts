@@ -1,27 +1,30 @@
 import 'source-map-support/register'
 
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
-
-import { generateUploadUrl } from '../../businessLogic/resolutions'
+import { UpdateResolutionRequest } from '../../requests/UpdateResolutionRequest'
+import { updateResolution } from '../../businessLogic/resolutions'
+import { getJwtToken } from '../utils'
 import * as middy from 'middy'
 import { cors } from 'middy/middlewares'
-import { getUserId } from '../utils'
 import { createLogger } from '../../utils/logger'
 
-const logger = createLogger('generateUploadUrl')
+const logger = createLogger('updatetResolutions')
 
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+
     try {
+      const jwtToken = getJwtToken(event)
       const itemId = event.pathParameters.itemId
-      const userId = getUserId(event)
-      logger.info(`Generate the signed-URL: ${itemId}`)
-  
-      const URL = await generateUploadUrl(itemId, userId)
+      const updateResolutionRequest: UpdateResolutionRequest = JSON.parse(event.body)
+      logger.info(`Update a resolution: ${itemId}`)
+
+      const resolutionItem = await updateResolution(updateResolutionRequest, itemId, jwtToken)
+
       return {
         statusCode: 200,
         body: JSON.stringify({
-          uploadUrl: URL
+          item: resolutionItem
         })
       }
     } catch(error) {

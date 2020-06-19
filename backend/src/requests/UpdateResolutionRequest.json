@@ -1,18 +1,18 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema",
-    "title": "Update todo item",
+    "title": "Update a resolution idea",
     "type": "object",
     "properties": {
-      "name": {
+      "title": {
         "type": "string"
       },
-      "dueDate": {
+      "desc": {
         "type": "string"
-      },
-      "done": {
-        "type": "boolean"
       }
     },
-    "required": ["name", "dueDate", "done"],
+    "required": [
+      "title", 
+      "desc" 
+    ],
     "additionalProperties": false
   }

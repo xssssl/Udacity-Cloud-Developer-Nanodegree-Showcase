@@ -1,19 +1,19 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "creat todo item",
+  "title": "creat a resolution idea",
   "type": "object",
   "properties": {
-    "name": {
+    "title": {
       "type": "string",
       "minLength": 1
     },
-    "dueDate": {
+    "desc": {
       "type": "string"
     }
   },
   "required": [
-    "name",
-    "dueDate"
+    "title",
+    "desc"
   ],
   "additionalProperties": false
 }

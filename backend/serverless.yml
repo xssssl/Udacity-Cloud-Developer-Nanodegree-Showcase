@@ -1,5 +1,5 @@
 service:
-  name: serverless-todo-app
+  name: Cloud-Developer-Showcase
 
 plugins:
   - serverless-webpack
@@ -31,9 +31,9 @@ provider:
       Resource: "*"
 
   environment:
-    APP_NAME: p4-serverless-todo-app-xssssl
-    TODOS_TABLE: Todos-${self:provider.stage}
-    TODOS_S3_BUCKET: ${self:provider.environment.APP_NAME}-${self:provider.stage}
+    APP_NAME: cloud-developer-nanodegree-showcase
+    RESOLUTIONS_TABLE: Resolutions-${self:provider.stage}
+    RESOLUTIONS_S3_BUCKET: ${self:provider.environment.APP_NAME}-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
     LOCAL_DYNAMODB_PORT: 8000
     AUTH0_JWKS_URL: https://xssssl.au.auth0.com/.well-known/jwks.json
@@ -50,107 +50,111 @@ custom:
       migrate: true
       seed: true
     seed:
-      todos:
+      resolutions:
         sources:
-          - table: ${self:provider.environment.TODOS_TABLE}
-            sources: [./test/seed/todosTable.json]
+          - table: ${self:provider.environment.RESOLUTIONS_TABLE}
+            sources: [./test/seed/ResolutionsTable.json]
 
   documentation:
     api:
       info:
         version: v1.0.0
-        title: Todos-API
-        description: Serverless APP for Udacity Cloud Developer Project 4
+        title: Resolutions-API
+        description: Udacity Cloud Developer Nanodegree Showcase
     models:
-      - name: CreateTodoRequest
+      - name: CreateResolutionRequest
         contentType: application/json
-        schema: ${file(src/requests/CreateToDoRequest.json)}
-      - name: UpdateTodoRequest
+        schema: ${file(src/requests/CreateResolutionRequest.json)}
+      - name: UpdateResolutionRequest
         contentType: application/json
-        schema: ${file(src/requests/UpdateTodoRequest.json)}
+        schema: ${file(src/requests/UpdateResolutionRequest.json)}
 
 functions:
   Auth:
     handler: src/lambda/auth/auth0Authorizer.handler
 
-  GetTodos:
-    handler: src/lambda/http/getTodos.handler
+  GetResolutions:
+    handler: src/lambda/http/getResolutions.handler
     events:
       - http:
           method: get
-          path: todos
+          path: items
           cors: true
           authorizer: Auth
     iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:provider.environment.APP_NAME}-GetResolutions-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:Query
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RESOLUTIONS_TABLE}
 
-  CreateTodo:
-    handler: src/lambda/http/createTodo.handler
+  CreateResolution:
+    handler: src/lambda/http/createResolution.handler
     events:
       - http:
           method: post
-          path: todos
+          path: items
           cors: true
           authorizer: Auth
           documentation:
-            summary: 'Create a new todo item'
-            description: 'Create a new todo item'
+            summary: 'Create a new resolution idea'
+            description: 'Create a new resolution idea'
             requestModels:
-              'application/json': CreateTodoRequest
+              'application/json': CreateResolutionRequest
           reqValidatorName: RequestBodyValidator
     iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:provider.environment.APP_NAME}-CreateResolution-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:PutItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RESOLUTIONS_TABLE}
 
-  UpdateTodo:
-    handler: src/lambda/http/updateTodo.handler
+  UpdateResolution:
+    handler: src/lambda/http/updateResolution.handler
     events:
       - http:
-          method: patch
-          path: todos/{todoId}
+          method: put
+          path: items/{itemId}
           cors: true
           authorizer: Auth
           documentation:
-            summary: 'Update a todo item'
-            description: 'Update a todo item'
+            summary: 'Update a resolution idea'
+            description: 'Update a resolution idea'
             requestModels:
-              'application/json': UpdateTodoRequest
+              'application/json': UpdateResolutionRequest
           reqValidatorName: RequestBodyValidator
     iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:provider.environment.APP_NAME}-UpdateResolution-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:UpdateItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RESOLUTIONS_TABLE}
 
-  DeleteTodo:
-    handler: src/lambda/http/deleteTodo.handler
+  DeleteResolution:
+    handler: src/lambda/http/deleteResolution.handler
     events:
       - http:
           method: delete
-          path: todos/{todoId}
+          path: items/{itemId}
           cors: true
           authorizer: Auth
     iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:provider.environment.APP_NAME}-DeleteResolution-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:DeleteItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RESOLUTIONS_TABLE}
 
   GenerateUploadUrl:
     handler: src/lambda/http/generateUploadUrl.handler
     events:
       - http:
           method: post
-          path: todos/{todoId}/attachment
+          path: items/{itemId}/attachment
           cors: true
           authorizer: Auth
     iamRoleStatementsInherit: true
@@ -159,30 +163,30 @@ functions:
       - Effect: Allow
         Action:
           - s3:*
-        Resource: arn:aws:s3:::${self:provider.environment.TODOS_S3_BUCKET}/*
+        Resource: arn:aws:s3:::${self:provider.environment.RESOLUTIONS_S3_BUCKET}/*
       - Effect: Allow
         Action:
           - dynamodb:GetItem
           - dynamodb:UpdateItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RESOLUTIONS_TABLE}
 
 resources:
   Resources:
-    TodosDynamoDBTable:
+    ResolutionDynamoDBTable:
       Type: "AWS::DynamoDB::Table"
       Properties:
         AttributeDefinitions:
           - AttributeName: userId
             AttributeType: S
-          - AttributeName: todoId
+          - AttributeName: itemId
             AttributeType: S
         KeySchema:
           - AttributeName: userId
             KeyType: HASH
-          - AttributeName: todoId
+          - AttributeName: itemId
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
-        TableName: ${self:provider.environment.TODOS_TABLE}
+        TableName: ${self:provider.environment.RESOLUTIONS_TABLE}
 
     RequestBodyValidator:
       Type: 'AWS::ApiGateway::RequestValidator'
@@ -196,7 +200,7 @@ resources:
     AttachmentsBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:provider.environment.TODOS_S3_BUCKET}
+        BucketName: ${self:provider.environment.RESOLUTIONS_S3_BUCKET}
         CorsConfiguration:
           CorsRules:
             - AllowedOrigins:
@@ -222,5 +226,5 @@ resources:
               Effect: Allow
               Principal: '*'
               Action: 's3:GetObject'
-              Resource: 'arn:aws:s3:::${self:provider.environment.TODOS_S3_BUCKET}/*'
+              Resource: 'arn:aws:s3:::${self:provider.environment.RESOLUTIONS_S3_BUCKET}/*'
         Bucket: !Ref AttachmentsBucket

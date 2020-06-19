@@ -1,9 +1,9 @@
-export interface Item {
+export interface ResolutionItem {
   userId: string
   itemId: string
-  createdAt: string
-  modifiedAt: string
   title: string
   desc: string
+  createdAt: string
+  modifiedAt: string
   attachmentUrl?: string
 }

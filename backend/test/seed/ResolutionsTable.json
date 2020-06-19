@@ -1,0 +1,56 @@
+[
+    {
+        "userId": "fakeUser1",
+        "itemId": "123",
+        "title": "Become more active",
+        "desc": "Find ways of moving around throughout the day instead of staying hunched over the computer",
+        "createdAt": "2020-06-19T10:01:45.424Z",
+        "modifiedAt": "2020-06-19T20:01:45.424Z",
+        "attachmentUrl": "http://example.com/image.png"
+    },
+    {
+        "userId": "fakeUser1",
+        "itemId": "234",
+        "title": "Meet new people",
+        "desc": "Get some knowledge and go and get to know new and interesting people",
+        "createdAt": "2020-06-10T11:01:45.424Z",
+        "modifiedAt": "2020-06-15T20:01:45.424Z",
+        "attachmentUrl": "http://example.com/image.png"
+    },
+    {
+        "userId": "fakeUser2",
+        "itemId": "456",
+        "title": "Learn a new language",
+        "desc": "Learn a language in my spare time",
+        "createdAt": "2020-06-19T10:01:45.424Z",
+        "modifiedAt": "2020-06-19T20:01:45.424Z",
+        "attachmentUrl": "http://example.com/image.png"
+    },
+    {
+        "userId": "fakeUser2",
+        "itemId": "567",
+        "title": "Adopt a cute pet",
+        "desc": "Find and adopt a pet that fits my living conditions and lifestyle",
+        "createdAt": "2020-06-10T11:01:45.424Z",
+        "modifiedAt": "2020-06-15T20:01:45.424Z",
+        "attachmentUrl": "http://example.com/image.png"
+    },
+    {
+        "userId": "google-oauth2|117119702132692247323",
+        "itemId": "678",
+        "title": "Learn to cook",
+        "desc": "Complete a 3-course-meal independently",
+        "createdAt": "2020-06-13T10:01:45.424Z",
+        "modifiedAt": "2020-06-17T20:01:45.424Z",
+        "attachmentUrl": "http://example.com/image.png"
+    },
+    {
+        "userId": "google-oauth2|117119702132692247323",
+        "itemId": "789",
+        "title": "Travel more and see the world",
+        "desc": "Experience different cultures and visit faraway places",
+        "createdAt": "2020-06-19T10:01:45.424Z",
+        "modifiedAt": "2020-06-19T20:01:45.424Z",
+        "attachmentUrl": "http://example.com/image.png"
+    }
+]

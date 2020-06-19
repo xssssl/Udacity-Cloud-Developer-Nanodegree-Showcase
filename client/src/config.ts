@@ -1,7 +1,7 @@
 // Backend API endpoint
-export const apiEndpoint = 'http://localhost:3003/dev'
-// const apiId = 'x3bm9xr91a'
-// export const apiEndpoint = `https://${apiId}.execute-api.ap-southeast-1.amazonaws.com/dev`
+// export const apiEndpoint = 'http://localhost:3003/dev'
+const apiId = 'p8scckl9zh'
+export const apiEndpoint = `https://${apiId}.execute-api.ap-southeast-1.amazonaws.com/dev`
 
 // Auth0 configuration
 export const authConfig = {
