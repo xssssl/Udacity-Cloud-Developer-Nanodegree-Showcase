@@ -11,7 +11,6 @@ const logger = createLogger('getResolutions')
 
 export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   try {
-    // console.log(event)
     const jwtToken = getJwtToken(event)
     const userId = getUserId(event)
     logger.info(`Get all resolution: User ID: ${userId}`)
@@ -26,7 +25,7 @@ export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGat
     }
   } catch (error) {
     return {
-      statusCode: 401,
+      statusCode: 400,
       body: JSON.stringify({
         error: error.message
       })

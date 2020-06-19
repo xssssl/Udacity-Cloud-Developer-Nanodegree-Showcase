@@ -8,15 +8,11 @@
       },
       "desc": {
         "type": "string"
-      },
-      "modifiedAt": {
-        "type": "string"
       }
     },
     "required": [
       "title", 
-      "desc", 
-      "modifiedAt"
+      "desc" 
     ],
     "additionalProperties": false
   }

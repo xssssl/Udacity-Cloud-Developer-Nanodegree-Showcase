@@ -1,18 +1,16 @@
 import * as uuid from 'uuid'
 
 import { ResolutionItem } from '../models/ResolutionItem'
-// import { ResolutionUpdate } from '../models/ResolutionUpdate'
+import { ResolutionUpdate } from '../models/ResolutionUpdate'
 import { ResolutionAccess } from '../dataLayer/resAccess'
 import { CreateResolutionRequest } from '../requests/CreateResolutionRequest'
-// import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
+import { UpdateResolutionRequest } from '../requests/UpdateResolutionRequest'
 import { parseUserId } from '../auth/utils'
 
 const resolutionAccess = new ResolutionAccess()
 
 export async function getAllResolutionItems(jwtToken: string): Promise<ResolutionItem[]> {
   const userId = parseUserId(jwtToken)
-  console.log(`getAllTodoItems: User ID: ${userId}`)
-
   return resolutionAccess.getAllItems(userId)
 }
 
@@ -35,19 +33,25 @@ export async function createResolutionItem(
   })
 }
 
-// export async function updateToDo(
-//   updateTodoRequest: UpdateTodoRequest,
-//   todoId: string,
-//   jwtToken: string
-// ): Promise<TodoUpdate> {
-//   const userId = parseUserId(jwtToken)
-//   return await todoAccess.updateToDo(updateTodoRequest, todoId, userId)
-// }
+export async function updateResolution(
+  updateResolutionRequest: UpdateResolutionRequest,
+  resId: string,
+  jwtToken: string
+): Promise<ResolutionUpdate> {
+  const userId = parseUserId(jwtToken)
+  const date = new Date().toISOString()
+  const resolutionUpdate: ResolutionUpdate = {
+                                              'title': updateResolutionRequest.title,
+                                              'desc': updateResolutionRequest.desc,
+                                              'modifiedAt': date
+                                            }
+  return await resolutionAccess.updateItem(resolutionUpdate, resId, userId)
+}
 
-// export async function deleteToDo(todoId: string, jwtToken: string): Promise<string> {
-//   const userId = parseUserId(jwtToken)
-//   return await todoAccess.deleteToDo(todoId, userId)
-// }
+export async function deleteResolution(resId: string, jwtToken: string): Promise<string> {
+  const userId = parseUserId(jwtToken)
+  return await resolutionAccess.deleteItem(resId, userId)
+}
 
 // export function generateUploadUrl(todoId: string, userId:string): Promise<string> {
 //   return todoAccess.generateUploadUrl(todoId, userId)

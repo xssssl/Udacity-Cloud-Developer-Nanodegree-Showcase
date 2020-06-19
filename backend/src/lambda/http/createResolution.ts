@@ -24,12 +24,12 @@ export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGat
         item
       })
     }
-  } catch(e) {
+  } catch(error) {
     return {
-      statusCode: 500,
+      statusCode: 400,
       body: JSON.stringify({
         item: newRes,
-        message: 'Create resolution item failed'
+        error: error.message
       })
     }
   }

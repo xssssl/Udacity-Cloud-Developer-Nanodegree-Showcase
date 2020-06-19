@@ -111,8 +111,8 @@ functions:
           - dynamodb:PutItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RESOLUTIONS_TABLE}
 
-  UpdateTodo:
-    handler: src/lambda/http/updateTodo.handler
+  UpdateResolution:
+    handler: src/lambda/http/updateResolution.handler
     events:
       - http:
           method: patch
@@ -120,20 +120,21 @@ functions:
           cors: true
           authorizer: Auth
           documentation:
-            summary: 'Update a todo item'
-            description: 'Update a todo item'
+            summary: 'Update a resolution idea'
+            description: 'Update a resolution idea'
             requestModels:
-              'application/json': UpdateTodoRequest
+              'application/json': UpdateResolutionRequest
           reqValidatorName: RequestBodyValidator
     iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:provider.environment.APP_NAME}-UpdateResolution-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:UpdateItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RESOLUTIONS_TABLE}
 
-  DeleteTodo:
-    handler: src/lambda/http/deleteTodo.handler
+  DeleteResolution:
+    handler: src/lambda/http/deleteResolution.handler
     events:
       - http:
           method: delete
@@ -141,6 +142,7 @@ functions:
           cors: true
           authorizer: Auth
     iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:provider.environment.APP_NAME}-DeleteResolution-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
         Action:

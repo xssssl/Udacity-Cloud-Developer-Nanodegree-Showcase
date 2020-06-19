@@ -4,5 +4,4 @@
 export interface UpdateResolutionRequest {
   title: string
   desc: string
-  modifiedAt: string
 }
