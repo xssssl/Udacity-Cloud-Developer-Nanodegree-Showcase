@@ -1,5 +1,5 @@
 service:
-  name: udacity-cloud-developer-nanodegree-showcase
+  name: Cloud-Developer-Showcase
 
 plugins:
   - serverless-webpack
@@ -31,7 +31,7 @@ provider:
       Resource: "*"
 
   environment:
-    APP_NAME: Cloud-Developer-Nanodegree-Showcase
+    APP_NAME: cloud-developer-nanodegree-showcase
     RESOLUTIONS_TABLE: Resolutions-${self:provider.stage}
     RESOLUTIONS_S3_BUCKET: ${self:provider.environment.APP_NAME}-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300

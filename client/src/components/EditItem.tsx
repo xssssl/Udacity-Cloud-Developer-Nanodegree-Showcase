@@ -149,7 +149,7 @@ EditItemState
           loading={this.state.uploadState !== UploadState.NoUpload}
           type="submit"
         >
-          Upload
+          Update
         </Button>
       </div>
     )
