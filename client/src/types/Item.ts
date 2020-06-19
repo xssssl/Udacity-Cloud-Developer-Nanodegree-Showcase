@@ -5,5 +5,5 @@ export interface Item {
   modifiedAt: string
   title: string
   desc: string
-  ImageUrl?: string
+  attachmentUrl?: string
 }

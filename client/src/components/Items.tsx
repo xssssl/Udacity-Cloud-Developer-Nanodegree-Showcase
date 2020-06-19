@@ -217,7 +217,7 @@ export class Items extends React.PureComponent<ItemsProps, ItemsState> {
               <Grid.Row centered={true} key={item.itemId}>
                 <Grid.Column width={8}>
                   <Segment>
-                    <Image src={item.ImageUrl} />
+                    <Image src={item.attachmentUrl} />
                   </Segment>
                 </Grid.Column>
                 <Grid.Column width={4}>
