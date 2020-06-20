@@ -1,7 +1,7 @@
 {
-  "name": "serverless-todo-app",
+  "name": "cloud-developer-showcase",
   "version": "1.0.0",
-  "description": "Serverless TODO image app",
+  "description": "Cloud Developer Nanodegree Showcase",
   "dependencies": {
     "@types/axios": "^0.14.0",
     "@types/http-errors": "^1.6.1",
