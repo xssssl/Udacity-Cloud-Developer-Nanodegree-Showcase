@@ -1,0 +1,437 @@
+{
+	"info": {
+		"_postman_id": "1796819c-4754-4ec8-8b5f-7a1bca74565b",
+		"name": "Udacity Cloud Developer Showcase",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Resolution Idea",
+			"item": [
+				{
+					"name": "Get all resolution",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "https://{{apiId}}.execute-api.ap-southeast-1.amazonaws.com/dev/items",
+							"protocol": "https",
+							"host": [
+								"{{apiId}}",
+								"execute-api",
+								"ap-southeast-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create resolution",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Read 10 books\",\n\t\"desc\": \"Any kind of books\"\n}"
+						},
+						"url": {
+							"raw": "https://{{apiId}}.execute-api.ap-southeast-1.amazonaws.com/dev/items",
+							"protocol": "https",
+							"host": [
+								"{{apiId}}",
+								"execute-api",
+								"ap-southeast-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update resolution",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Become more organized\",\n\t\"desc\": \"Make it a habit, get help from apps and tools\"\n}"
+						},
+						"url": {
+							"raw": "https://{{apiId}}.execute-api.ap-southeast-1.amazonaws.com/dev/items/176b86f8-f8d9-496c-91a5-994c6bbfbfcb",
+							"protocol": "https",
+							"host": [
+								"{{apiId}}",
+								"execute-api",
+								"ap-southeast-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"items",
+								"176b86f8-f8d9-496c-91a5-994c6bbfbfcb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete resolution",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{apiId}}.execute-api.ap-southeast-1.amazonaws.com/dev/items/532f868b-a508-43db-b122-2950b83c5857",
+							"protocol": "https",
+							"host": [
+								"{{apiId}}",
+								"execute-api",
+								"ap-southeast-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"items",
+								"532f868b-a508-43db-b122-2950b83c5857"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get attachment URL",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{apiId}}.execute-api.ap-southeast-1.amazonaws.com/dev/items/35dd600f-43c2-4649-903c-615e1586a26f/attachment",
+							"protocol": "https",
+							"host": [
+								"{{apiId}}",
+								"execute-api",
+								"ap-southeast-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"items",
+								"35dd600f-43c2-4649-903c-615e1586a26f",
+								"attachment"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "631c9835-9fe9-42d5-99e4-b2269c6661ba",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "2af0d042-e084-4dc1-9827-40376d7c4819",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Offline Resolution Idea",
+			"item": [
+				{
+					"name": "Get all resolutions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:{{port}}/dev/items",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"dev",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update resolution",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Drink more water\",\n\t\"desc\": \"Drink more than 1L water on a daily basis\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/dev/items/c636763f-5ad3-4fae-87cb-58ba84dc3fcf",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"dev",
+								"items",
+								"c636763f-5ad3-4fae-87cb-58ba84dc3fcf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get attachment URL",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/dev/items/e9be0ad1-ca35-4226-a5ce-013520ed7295/attachment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"dev",
+								"items",
+								"e9be0ad1-ca35-4226-a5ce-013520ed7295",
+								"attachment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a resolution",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Do more excises\",\n\t\"desc\": \"Go to gym on a daily basis\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/dev/items",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"dev",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete resolution",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/dev/items/c636763f-5ad3-4fae-87cb-58ba84dc3fcf",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"dev",
+								"items",
+								"c636763f-5ad3-4fae-87cb-58ba84dc3fcf"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "785529f9-aee0-4f19-a2b3-b4930b158472",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "a764139f-4ca3-41d5-991a-089baf5d7520",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "6d9fc6c7-4b41-41f6-a6ee-0a7d24f3197f",
+			"key": "apiId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "e9640ffa-750d-4412-8faa-25ef1f8b333d",
+			"key": "authToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "36714e17-ee45-4145-b836-39fe7d2ae82d",
+			"key": "port",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
