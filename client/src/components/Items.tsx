@@ -220,7 +220,7 @@ export class Items extends React.PureComponent<ItemsProps, ItemsState> {
                     <Image src={item.attachmentUrl} />
                   </Segment>
                 </Grid.Column>
-                <Grid.Column width={4}>
+                <Grid.Column width={7}>
                   <Segment>
                     {item.title}
                   </Segment>
@@ -232,17 +232,14 @@ export class Items extends React.PureComponent<ItemsProps, ItemsState> {
                     {item.createdAt}
                   </Segment>
                 </Grid.Column>
-                <Grid.Column width={2}>
-                  <Segment>
-                    <Button icon color="blue" onClick={() => this.onEditButtonClick(item.itemId)} >
-                      <Icon name="pencil" />
-                    </Button>
-                  </Segment>
-                  <Segment>
-                    <Button icon color="red" onClick={() => this.onItemDelete(item.itemId)}>
-                      <Icon name="delete" />  
-                    </Button>
-                  </Segment>
+                <Grid.Column width={1}>
+                  <Button icon color="blue" onClick={() => this.onEditButtonClick(item.itemId)} >
+                    <Icon name="pencil" />
+                  </Button>
+                  <br /><br />
+                  <Button icon color="red" onClick={() => this.onItemDelete(item.itemId)}>
+                    <Icon name="delete" />  
+                  </Button>
                 </Grid.Column>
               </Grid.Row>              
             )
