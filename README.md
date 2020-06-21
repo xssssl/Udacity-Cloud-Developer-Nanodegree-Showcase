@@ -28,7 +28,7 @@ The resolution reminder is an **AWS Serverless Application** where a user can pe
 * The application allows users to upload a file through [S3 pre-signed URL](https://docs.aws.amazon.com/AmazonS3/latest/dev/PresignedUrlUploadObject.html)
 * The application only displays resolutions for a logged in user
 * Authentication is implemented and does not allow unauthenticated access
-![Homepage.png](https://github.com/xssssl/Udacity-Cloud-Developer-Nanodegree-Showcase/blob/dev/screenshots/Homepage.png)
+![Home.png](https://github.com/xssssl/Udacity-Cloud-Developer-Nanodegree-Showcase/blob/dev/screenshots/Home.png)
 
 # Best Practices
 * The business layer of the application is separated from data layer code for database access, file storage, and code related to AWS Lambda
